@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I love you Ghina</title>
+<style>
+  body {
+    background: radial-gradient(circle at center, #5b007c, #120018 85%);
+    color: white;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .heart {
+    width: 120px;
+    height: 120px;
+    background-color: #ff4d6d;
+    position: relative;
+    transform: rotate(-45deg);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .heart::before,
+  .heart::after {
+    content: '';
+    width: 120px;
+    height: 120px;
+    background-color: #ff4d6d;
+    border-radius: 50%;
+    position: absolute;
+  }
+
+  .heart::before {
+    top: -60px;
+    left: 0;
+  }
+
+  .heart::after {
+    left: 60px;
+    top: 0;
+  }
+
+  .flower {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: none;
+    margin-bottom: 40px;
+    animation: appear 1s ease forwards;
+  }
+
+  .petal {
+    position: absolute;
+    width: 50px;
+    height: 70px;
+    background: radial-gradient(circle at 30% 30%, #fff, #f7c6c7);
+    border-radius: 50%;
+    top: 25px;
+    left: 35px;
+    transform-origin: center 60px;
+  }
+
+  /* 🌼 Center adjusted slightly lower */
+  .center {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #ffdd55, #d4a017);
+    border-radius: 50%;
+    top: 67.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px gold;
+    z-index: 2;
+  }
+
+  .text {
+    font-size: 28px; /* bigger text */
+    margin-top: 70px;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  @keyframes explode {
+    0% { transform: scale(0); opacity: 1; }
+    80% { transform: scale(1.5); opacity: 1; }
+    100% { transform: scale(0); opacity: 0; }
+  }
+
+  .particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: pink;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: explode 1s ease forwards;
+  }
+
+  @keyframes appear {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <div class="heart" id="heart"></div>
+  <div class="flower" id="flower"></div>
+  <div class="text" id="text">I love you Ghina 💖</div>
+
+<script>
+  const heart = document.getElementById('heart');
+  const flower = document.getElementById('flower');
+  const text = document.getElementById('text');
+
+  // Create petals
+  for (let i = 0; i < 8; i++) {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.transform = `rotate(${i * 45}deg) translateY(-25px)`;
+    flower.appendChild(petal);
+  }
+
+  // Add yellow center
+  const center = document.createElement('div');
+  center.className = 'center';
+  flower.appendChild(center);
+
+  heart.addEventListener('click', (e) => {
+    // Explosion effect
+    for (let i = 0; i < 25; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      document.body.appendChild(particle);
+
+      const x = (Math.random() - 0.5) * 300;
+      const y = (Math.random() - 0.5) * 300;
+
+      particle.style.left = `${e.clientX}px`;
+      particle.style.top = `${e.clientY}px`;
+
+      particle.animate([
+        { transform: 'translate(0, 0)', opacity: 1 },
+        { transform: `translate(${x}px, ${y}px)`, opacity: 0 }
+      ], {
+        duration: 800 + Math.random() * 400,
+        easing: 'ease-out'
+      });
+
+      setTimeout(() => particle.remove(), 1000);
+    }
+
+    // Hide heart, show flower and text
+    heart.style.display = 'none';
+    flower.style.display = 'block';
+
+    setTimeout(() => {
+      text.style.opacity = 1;
+    }, 800);
+  });
+</script>
+</body>
+</html>
